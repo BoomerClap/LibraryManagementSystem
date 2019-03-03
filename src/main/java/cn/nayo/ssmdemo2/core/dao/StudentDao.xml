@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.nayo.ssmdemo2.core.dao.StudentDao">
+	<select id="queryStudentById" resultType="cn.nayo.ssmdemo2.core.entity.Student">
+		select
+			student_id,
+			password
+		from
+			student
+		where
+			student_id = #{student_id}
+		and
+			password = #{password}
+	</select>
+
+</mapper>

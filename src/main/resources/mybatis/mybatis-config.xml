@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+    <!--配置全局属性-->
+    <settings>
+        <!--开启日志-->
+        <setting name="logImpl" value="LOG4J"/>
+        <!--开启二级缓存-->
+        <!--具体的配置参考：http://www.mybatis.org/mybatis-3/zh/configuration.html#settings-->
+        <!--<setting name="cacheEnable" value="true"/>-->
+        <setting name="lazyLoadingEnabled" value="false"/>
+        <setting name="aggressiveLazyLoading" value="true"/>
+    </settings>
+
+    <!--&lt;!&ndash;添加别名&ndash;&gt;-->
+    <!--<typeAliases>-->
+        <!--<typeAlias type="cn.nayo.ssm.core.pojo.User" alias="User"/>-->
+    <!--</typeAliases>-->
+
+
+    <environments default="development">
+
+        <environment id="development">
+            <transactionManager type="JDBC">
+                <!--配置数据库连接信息-->
+            </transactionManager>
+            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql://localhost:3306/librarydemo?serverTimezone=GMT%2B8"/>
+                <property name="username" value="root"/>
+                <property name="password" value="wei197181"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+    <!--&lt;!&ndash;注册UserMapper.xml&ndash;&gt;-->
+    <!--<mappers>-->
+        <!--<mapper resource="cn/nayo/ssm/core/mapper/UserMapper.xml"/>-->
+    <!--</mappers>-->
+
+    <!--&lt;!&ndash;注册userMapper.xml文件&ndash;&gt;-->
+    <!--&lt;!&ndash;userMapper.xml位于cn.nayo.mapping下，所以resource写成  &ndash;&gt;-->
+    <!--<mappers>-->
+        <!--&lt;!&ndash;注册userMapper.xml文件&ndash;&gt;-->
+        <!--<mapper resource="cn/nayo/mapping/userMapper.xml"/>-->
+        <!--&lt;!&ndash;注册UserMapper映射接口&ndash;&gt;-->
+        <!--<mapper class="cn.nayo.mapping.UserMapperI"/>-->
+    <!--</mappers>-->
+
+</configuration>
