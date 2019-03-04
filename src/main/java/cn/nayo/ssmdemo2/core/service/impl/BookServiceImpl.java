@@ -8,6 +8,7 @@ import cn.nayo.ssmdemo2.core.dao.AppointmentDao;
 import cn.nayo.ssmdemo2.core.dao.BookDao;
 import cn.nayo.ssmdemo2.core.dao.StudentDao;
 import cn.nayo.ssmdemo2.core.dto.AppointExecution;
+import cn.nayo.ssmdemo2.core.entity.Appointment;
 import cn.nayo.ssmdemo2.core.entity.Book;
 import cn.nayo.ssmdemo2.core.entity.Student;
 import cn.nayo.ssmdemo2.core.enums.AppointStatementEnum;
@@ -61,7 +62,7 @@ public class BookServiceImpl implements BookService {
      * @return
      */
     @Override
-    @Transactional(rollbackFor = Exception.class)
+    @Transactional
     public AppointExecution appoint(long book_id, long student_id) {
         try {
             //首先库存数量-1
@@ -71,14 +72,19 @@ public class BookServiceImpl implements BookService {
             if (update < 0){
                 throw new NoNumberException("no number");
             }else {
-                //执行预约操作
-                int insert = appointmentDao.insertAppointment(book_id, student_id, new Date());
-
-                //如果重复预约
-                if (insert <= 0){
+                //首先检查预约表appointment中是否存在book_id、student_id相同的预约信息，即校验该次预约是否是重复预约
+                Appointment check = appointmentDao.queryById(student_id, book_id);
+                System.out.println(check);
+                if (check != null){
                     throw new RepeatAppointException("repeat appoint");
                 }else {
-                    return new AppointExecution(book_id, AppointStatementEnum.SUCCESS);
+                    //执行预约操作
+                    int insert = appointmentDao.insertAppointment(book_id, student_id, new Date());
+                    if (insert > 0){
+                        return new AppointExecution(book_id, AppointStatementEnum.SUCCESS);
+                    }else {
+                        return new AppointExecution(book_id, AppointStatementEnum.INNER_ERROR);
+                    }
                 }
             }
         }catch (NoNumberException e1){

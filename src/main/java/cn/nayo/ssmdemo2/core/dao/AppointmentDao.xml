@@ -25,4 +25,27 @@
 			student_id = #{student_id}
 	</delete>
 
+	<select id="queryById" resultMap="queryByIdResultMap">
+		select
+			student_id, book_id
+		from
+			appointment
+		where
+			book_id = #{book_id}
+		and
+			student_id = #{student_id}
+	</select>
+	<resultMap id="queryByIdResultMap" type="cn.nayo.ssmdemo2.core.entity.Appointment">
+		<result property="book_id" column="book_id"/>
+		<result property="student_id" column="student_id"/>
+		<result property="appointTime" column="appoint_time"/>
+		<collection property="book_id" column="book_id" ofType="cn.nayo.ssmdemo2.core.entity.Book" >
+			<id column="book_id" property="book_id"/>
+			<result property="name" column="name"/>
+			<result property="name" column="name"/>
+			<result property="number" column="number"/>
+			<result property="introd" column="introd"/>
+		</collection>
+	</resultMap>
+
 </mapper>

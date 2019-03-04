@@ -65,41 +65,6 @@
     </div>
 
 
-    <%--&lt;%&ndash;弹出登录层，输入电话&ndash;%&gt;--%>
-    <%--<!--  登录弹出层 输入电话   -->--%>
-    <%--<div id="varifyModal" class="modal fade">--%>
-        <%--<div class="modal-dialog">--%>
-            <%--<div class="modal-content">--%>
-                <%--<div class="modal-header">--%>
-                    <%--<h3 class="modal-title text-center">--%>
-                        <%--<span class="glyphicon glyphicon-studentId"> </span>请输入学号和密码:--%>
-                    <%--</h3>--%>
-                <%--</div>--%>
-
-                <%--<div class="modal-body">--%>
-                    <%--<div class="row">--%>
-                        <%--<div class="col-xs-8 col-xs-offset-2">--%>
-                            <%--<input type="text" name="studentId" id="student_idKey"placeholder="请填写学号" class="form-control">--%>
-                        <%--</div>--%>
-                        <%--<div class="col-xs-8 col-xs-offset-2">--%>
-                            <%--<input type="password" name="password" id="passwordKey" placeholder="请输入密码" class="form-control">--%>
-                        <%--</div>--%>
-                    <%--</div>--%>
-                <%--</div>--%>
-
-                <%--<div class="modal-footer">--%>
-                    <%--<!--  验证信息 -->--%>
-                    <%--<span id="studentMessage" class="glyphicon"> </span>--%>
-                    <%--<button type="button" id="LoginBtn" class="btn btn-success">--%>
-                        <%--<span class="glyphicon glyphicon-student"></span>--%>
-                        <%--Submit--%>
-                    <%--</button>--%>
-                <%--</div>--%>
-            <%--</div>--%>
-        <%--</div>--%>
-    <%--</div>--%>
-
-
     <div class="modal fade" id="loginModalId" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">

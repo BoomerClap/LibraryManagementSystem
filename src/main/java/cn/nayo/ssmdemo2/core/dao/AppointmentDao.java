@@ -1,5 +1,6 @@
 package cn.nayo.ssmdemo2.core.dao;
 
+import cn.nayo.ssmdemo2.core.entity.Appointment;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
@@ -21,4 +22,12 @@ public interface AppointmentDao {
      * @return
      */
     int delAppointment(@Param("student_id") long student_id, @Param("book_id") long book_id);
+
+    /**
+     * 根据id查找表中有没有特定学号预约的特定书籍
+     * @param student_id
+     * @param book_id
+     * @return
+     */
+    Appointment queryById(@Param("student_id") long student_id, @Param("book_id") long book_id);
 }

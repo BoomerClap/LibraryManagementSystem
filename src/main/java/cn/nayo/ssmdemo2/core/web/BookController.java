@@ -8,6 +8,9 @@ import cn.nayo.ssmdemo2.core.dto.AppointExecution;
 import cn.nayo.ssmdemo2.core.dto.Result;
 import cn.nayo.ssmdemo2.core.entity.Book;
 import cn.nayo.ssmdemo2.core.entity.Student;
+import cn.nayo.ssmdemo2.core.enums.AppointStatementEnum;
+import cn.nayo.ssmdemo2.core.exception.NoNumberException;
+import cn.nayo.ssmdemo2.core.exception.RepeatAppointException;
 import cn.nayo.ssmdemo2.core.service.BookService;
 import cn.nayo.ssmdemo2.core.service.StudentService;
 import com.sun.org.apache.regexp.internal.RE;
@@ -17,6 +20,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.jws.WebParam;
@@ -131,9 +135,24 @@ public class BookController {
         Result<AppointExecution> result;
         AppointExecution execution = null;
 
-        execution = bookService.appoint(book_id, student_id);
-        result = new Result<AppointExecution>(true,execution);
-        return result;
+        //可能会出错，手动try catch
+        try {
+            execution = bookService.appoint(book_id, student_id);
+            result = new Result<AppointExecution>(true,execution);
+            return result;
+        }catch (NoNumberException e1){
+            execution=new AppointExecution(book_id, AppointStatementEnum.NO_NUMBER);
+            result=new Result<AppointExecution>(true,execution);
+            return result;
+        }catch(RepeatAppointException e2){
+            execution=new AppointExecution(book_id,AppointStatementEnum.REPEAT_APPOINT);
+            result=new Result<AppointExecution>(true,execution);
+            return result;
+        }catch (Exception e){
+            execution=new AppointExecution(book_id,AppointStatementEnum.INNER_ERROR);
+            result=new Result<AppointExecution>(true,execution);
+            return result;
+        }
     }
 
     /**
@@ -157,10 +176,12 @@ public class BookController {
      * @return
      */
     @RequestMapping(value = "/{book_id}/{student_id}/cancelAppointment")
-    public void cancelAppointment(@PathVariable("book_id") long book_id, @PathVariable("student_id") long student_id, Model model){
+    public String cancelAppointment(@PathVariable("book_id") long book_id, @PathVariable("student_id") long student_id, Model model){
         int cancelResult = bookService.cancelAppointment(student_id,book_id);
         //重新查找已经预约了哪些书籍
-        appointedListByStudentId(student_id,model);
+//        appointedListByStudentId(student_id, model);
+        return "redirect:/books/appointed?student_id="+ student_id;
+
     }
 
 
