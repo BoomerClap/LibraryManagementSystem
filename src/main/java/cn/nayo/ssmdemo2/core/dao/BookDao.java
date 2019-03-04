@@ -35,4 +35,18 @@ public interface BookDao {
      * @return
      */
     int reduceNumber(long book_id);
+
+    /**
+     * 获取某个学号预约了哪些书
+     * @param student_id
+     * @return
+     */
+    List<Book> queryBooksByStudentId(long student_id);
+
+    /**
+     * 取消预约图书
+     * @param book_id
+     * @return
+     */
+    int addNumber(long book_id);
 }

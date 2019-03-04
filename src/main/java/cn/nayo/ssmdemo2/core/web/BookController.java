@@ -11,6 +11,7 @@ import cn.nayo.ssmdemo2.core.entity.Student;
 import cn.nayo.ssmdemo2.core.service.BookService;
 import cn.nayo.ssmdemo2.core.service.StudentService;
 import com.sun.org.apache.regexp.internal.RE;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -18,9 +19,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.jws.WebParam;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -34,6 +37,8 @@ public class BookController {
     private BookService bookService;
     @Resource(name = "studentService")
     private StudentService studentService;
+
+    Logger logger = Logger.getLogger(BookController.class);
 
     @RequestMapping(value = "/hello")
     @ResponseBody
@@ -128,9 +133,39 @@ public class BookController {
 
         execution = bookService.appoint(book_id, student_id);
         result = new Result<AppointExecution>(true,execution);
-
         return result;
     }
+
+    /**
+     * 按照学号查询该学生已经预约了哪些书籍
+     * @param student_id
+     * @return
+     */
+    @RequestMapping("/appointed")
+    private String appointedListByStudentId(Long student_id, Model model){
+//        System.out.println(student_id);
+        logger.info(student_id);
+        List<Book> bookList = bookService.getAppointedListByStudentId(student_id);
+        model.addAttribute("bookList", bookList);
+        return "appointed";
+    }
+
+    /**
+     * 取消预约图书
+     * @param book_id
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = "/{book_id}/{student_id}/cancelAppointment")
+    public void cancelAppointment(@PathVariable("book_id") long book_id, @PathVariable("student_id") long student_id, Model model){
+        int cancelResult = bookService.cancelAppointment(student_id,book_id);
+        //重新查找已经预约了哪些书籍
+        appointedListByStudentId(student_id,model);
+    }
+
+
+
+
 
 
     /**

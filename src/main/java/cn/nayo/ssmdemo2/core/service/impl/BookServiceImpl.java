@@ -12,9 +12,11 @@ import cn.nayo.ssmdemo2.core.entity.Book;
 import cn.nayo.ssmdemo2.core.entity.Student;
 import cn.nayo.ssmdemo2.core.enums.AppointStatementEnum;
 import cn.nayo.ssmdemo2.core.exception.AppointException;
+import cn.nayo.ssmdemo2.core.exception.CancelAppointmentException;
 import cn.nayo.ssmdemo2.core.exception.NoNumberException;
 import cn.nayo.ssmdemo2.core.exception.RepeatAppointException;
 import cn.nayo.ssmdemo2.core.service.BookService;
+import org.junit.Test;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -59,7 +61,7 @@ public class BookServiceImpl implements BookService {
      * @return
      */
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public AppointExecution appoint(long book_id, long student_id) {
         try {
             //首先库存数量-1
@@ -86,6 +88,52 @@ public class BookServiceImpl implements BookService {
         }catch (Exception e){
             //所有编译期异常转换为运行期异常
             throw new AppointException("Appoint inner error:" + e.getMessage());
+        }
+    }
+
+    /**
+     * 查找某个学号的学生预约了哪些书
+     * @param student_id
+     * @return
+     */
+    @Override
+    public List<Book> getAppointedListByStudentId(Long student_id) {
+        return bookDao.queryBooksByStudentId(student_id);
+    }
+
+    /**
+     * 取消预约图书，开启事务
+     * @param student_id
+     * @param book_id
+     * @return
+     */
+    @Override
+    @Transactional(rollbackFor = RuntimeException.class)
+    public int cancelAppointment(long student_id, long book_id) {
+        int result = 0;
+        try {
+            //库存数量+1，book表中number + 1
+            int add = bookDao.addNumber(book_id);
+            //操作失败
+            if (add < 0){
+                throw new CancelAppointmentException("取消预约操作失败，book表number+1失败");
+            }else {
+                //预约表中删除预约的信息，即appoint表中删除相应的行
+                int del = appointmentDao.delAppointment(student_id, book_id);
+                //操作失败
+                if (del < 0){
+                    throw new CancelAppointmentException("取消预约操作失败，删除appointment中数据失败");
+                }else {
+                    result = 1;
+                    System.out.println("取消预约成功");
+                }
+            }
+        }catch (CancelAppointmentException e1){
+            throw e1;
+        }catch (Exception e){
+            throw new  CancelAppointmentException("取消预约错误:" + e.getMessage());
+        }finally {
+            return result;
         }
     }
 }

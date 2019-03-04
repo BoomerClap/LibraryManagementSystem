@@ -4,7 +4,7 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.nayo.ssmdemo2.core.dao.BookDao">
 	<select id="queryById" parameterType="long" resultType="cn.nayo.ssmdemo2.core.entity.Book" >
-		<!-- 具体的sql -->
+		<!-- 根据书籍的id获取书籍 -->
 		SELECT
 			book_id,
 			name,
@@ -17,6 +17,7 @@
 	</select>
 
 	<select id="querySome" parameterType="cn.nayo.ssmdemo2.core.entity.Book" resultType="cn.nayo.ssmdemo2.core.entity.Book">
+-- 		根据字段模糊查找
 		SELECT book_id,name,introd,number FROM book
 		<where>
 			<!-- <if test="name !=null and !&quot;&quot;.equals(name.trim())">  -->
@@ -26,6 +27,7 @@
 	</select> 
 		
 	<select id="queryAll" resultType="cn.nayo.ssmdemo2.core.entity.Book">
+-- 		获取id在某个范围内的书籍
 		SELECT
 			book_id,
 			name,
@@ -38,11 +40,38 @@
 		LIMIT #{offset}, #{limit}
 	</select>
 	
+	<select id="queryBooksByStudentId" resultType="cn.nayo.ssmdemo2.core.entity.Book">
+-- 		根据学号查询该学生预约了哪些书籍
+		SELECT
+			b.book_id, b.name, b.introd, b.number
+		FROM
+			book b
+		JOIN
+			appointment a
+		ON
+			a.book_id = b.book_id
+		WHERE
+			a.student_id = #{student_id};
+	</select>
+	
 	<update id="reduceNumber">
+-- 		书籍库存数目-1，用于预约书籍业务
 		UPDATE
 			book
 		SET
 			number = number - 1
+		WHERE
+			book_id = #{book_id}
+		AND
+			number > 0
+	</update>
+
+	<update id="addNumber">
+-- 		书籍库存数目+1，用于取消预约业务
+		UPDATE
+			book
+		SET
+			number = number + 1
 		WHERE
 			book_id = #{book_id}
 		AND

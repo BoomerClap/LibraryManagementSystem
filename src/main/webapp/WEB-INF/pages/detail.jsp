@@ -13,7 +13,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BookDetail</title>
-    <%@include file="common/head.jsp"%>
     <%--<link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css">--%>
     <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -57,7 +56,8 @@
                 <span class="glyphicon" id="appoint-box"></span> <!--在js里面调用这个id还可以动态显示一些其他东西，例如动态时间等（需要插件）-->
 
                 <span class="glyphicon">
-                    <a class="btn btn-primary btn-lg" href="/books/appoint?student_id=${cookie['student_id'].value}" target="_blank">查看我的已预约书籍</a>
+                    <%--已经被预约的图书--%>
+                    <a class="btn btn-primary btn-lg" href="/books/appointed?student_id=${cookie['student_id'].value}" target="_blank">查看我的已预约书籍</a>
                 </span>
             </h2>
 
@@ -235,6 +235,9 @@
                             var state = result["state"];
                             var stateInfo = result["stateInfo"];
 
+                //如何提示预约成功
+
+                            alert(stateInfo);
                             node.html("<span class='label label-success'>" + stateInfo + "</span> ");
                         }
                         console.log("result:" + result);

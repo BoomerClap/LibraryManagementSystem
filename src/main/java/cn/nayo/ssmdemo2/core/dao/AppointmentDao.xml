@@ -5,12 +5,24 @@
 <mapper namespace="cn.nayo.ssmdemo2.core.dao.AppointmentDao">
 	<insert id="insertAppointment">
 		insert
--- 			ignore
+-- 		可能出错
+			ignore
 		into
 			appointment(book_id, student_id, appoint_time)
 		values
 -- 		日期可能出错
 			(#{book_id}, #{student_id}, #{appoint_time})
 	</insert>
+
+	<delete id="delAppointment">
+-- 		删除预约表中的数据
+		DELETE
+		FROM
+			appointment
+		WHERE
+			book_id = #{book_id}
+		AND
+			student_id = #{student_id}
+	</delete>
 
 </mapper>
