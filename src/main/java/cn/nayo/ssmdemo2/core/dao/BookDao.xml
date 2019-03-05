@@ -74,8 +74,6 @@
 			number = number + 1
 		WHERE
 			book_id = #{book_id}
-		AND
-			number > 0
 	</update>
 
 </mapper>

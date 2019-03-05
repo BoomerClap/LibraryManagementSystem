@@ -57,7 +57,7 @@
 
                 <span class="glyphicon">
                     <%--已经被预约的图书--%>
-                    <a class="btn btn-primary btn-lg" href="/books/appointed?student_id=${cookie['student_id'].value}" target="_blank">查看我的已预约书籍</a>
+                    <a class="btn btn-primary btn-lg" href="/books/appointed?student_id=${cookie["student_id"].value}" target="_blank">查看我的已预约书籍</a>
                 </span>
             </h2>
 
@@ -109,7 +109,7 @@
     <%--jQuery countDown倒计时插件--%>
     <script src="http://cdn.bootcss.com/jquery.countdown/2.1.0/jquery.countdown.min.js"></script>
 
-    <%--<script src="/myScript/bookappointment.js" type="text/javascript"/>--%>
+    <script src="/myScript/bookappointment.js" type="text/javascript"/>
     <script type="text/javascript">
         var bookAppointment = {
             //封装Ajax的url

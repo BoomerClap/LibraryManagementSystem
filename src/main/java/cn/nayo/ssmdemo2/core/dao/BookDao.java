@@ -34,7 +34,7 @@ public interface BookDao {
      * @param book_id
      * @return
      */
-    int reduceNumber(long book_id);
+    int reduceNumber(@Param("book_id") long book_id);
 
     /**
      * 获取某个学号预约了哪些书
@@ -48,5 +48,5 @@ public interface BookDao {
      * @param book_id
      * @return
      */
-    int addNumber(long book_id);
+    int addNumber(@Param("book_id") long book_id);
 }

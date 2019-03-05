@@ -20,6 +20,7 @@ import cn.nayo.ssmdemo2.core.service.BookService;
 import org.junit.Test;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -69,18 +70,18 @@ public class BookServiceImpl implements BookService {
             int update = bookDao.reduceNumber(book_id);
 
             //已经没有库存
-            if (update < 0){
+            if (update <= 0){
                 throw new NoNumberException("no number");
             }else {
                 //首先检查预约表appointment中是否存在book_id、student_id相同的预约信息，即校验该次预约是否是重复预约
                 Appointment check = appointmentDao.queryById(student_id, book_id);
-                System.out.println(check);
                 if (check != null){
                     throw new RepeatAppointException("repeat appoint");
                 }else {
                     //执行预约操作
                     int insert = appointmentDao.insertAppointment(book_id, student_id, new Date());
                     if (insert > 0){
+                        System.out.println("预约成功");
                         return new AppointExecution(book_id, AppointStatementEnum.SUCCESS);
                     }else {
                         return new AppointExecution(book_id, AppointStatementEnum.INNER_ERROR);
@@ -88,10 +89,14 @@ public class BookServiceImpl implements BookService {
                 }
             }
         }catch (NoNumberException e1){
+            //开启事务回滚，也可以去上面一层捕捉，详见https://blog.csdn.net/yipanbo/article/details/46048413
+//            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             throw e1;
         }catch (RepeatAppointException e2){
+//            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             throw e2;
         }catch (Exception e){
+//            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             //所有编译期异常转换为运行期异常
             throw new AppointException("Appoint inner error:" + e.getMessage());
         }
@@ -121,13 +126,13 @@ public class BookServiceImpl implements BookService {
             //库存数量+1，book表中number + 1
             int add = bookDao.addNumber(book_id);
             //操作失败
-            if (add < 0){
+            if (add <= 0){
                 throw new CancelAppointmentException("取消预约操作失败，book表number+1失败");
             }else {
                 //预约表中删除预约的信息，即appoint表中删除相应的行
                 int del = appointmentDao.delAppointment(student_id, book_id);
                 //操作失败
-                if (del < 0){
+                if (del <= 0){
                     throw new CancelAppointmentException("取消预约操作失败，删除appointment中数据失败");
                 }else {
                     result = 1;
