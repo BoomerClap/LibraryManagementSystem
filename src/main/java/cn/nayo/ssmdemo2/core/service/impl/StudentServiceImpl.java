@@ -28,4 +28,9 @@ public class StudentServiceImpl implements StudentService {
         System.out.println(student_id + "---" + password);
         return studentDao.queryStudentById(student_id, password);
     }
+
+    @Override
+    public int regiresterStu(Student student) {
+        return studentDao.addStu(student);
+    }
 }

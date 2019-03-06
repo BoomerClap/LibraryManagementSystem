@@ -6,110 +6,60 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@include file="common/tag.jsp"%>
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BookDetail</title>
-    <%--<link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css">--%>
-    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
-</head>
-<body>
-    <div class="container">
-        <h2>书籍《${book.name}》详情</h2>
-        <hr/>
+<%--页面登录框--%>
 
-        <div class="panel-body">
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th>图书ID</th>
-                        <th>图书名称</th>
-                        <th>图书简介</th>
-                        <th>剩余数量</th>
-                        <th>预约数量</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>${book.book_id}</td>
-                        <td>${book.name}</td>
-                        <td>${book.introd}</td>
-                        <td>${book.number}</td>
-                        <td>1</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <div class="penal-body text-center">
-            <%--预约操作--%>
-            <%--<a href="/books/{book_id}/varify" class="btn btn-primary success" id="varifyBtn">预约</a>--%>
-            <a class="btn btn-primary success" id="varifyBtn">预约</a>
-
-            <h2 class="text-danger">
-                <!--用来展示预约控件-->
-                <span class="glyphicon" id="appoint-box"></span> <!--在js里面调用这个id还可以动态显示一些其他东西，例如动态时间等（需要插件）-->
-
-                <span class="glyphicon">
-                    <%--已经被预约的图书--%>
-                    <a class="btn btn-primary btn-lg" href="/books/appointed?student_id=${cookie["student_id"].value}" target="_blank">查看我的已预约书籍</a>
-                </span>
-            </h2>
-
-        </div>
-    </div>
-
-
-    <div class="modal fade" id="loginModalId" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                        ×
-                    </button>
-                    <h4 class="modal-title" id="myModalLabel">登录提示：</h4>
+<%--登录隐藏框--%>
+<div class="modal fade" id="loginModalId" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button id="closeDialog" type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    ×
+                </button>
+                <h4 class="modal-title" id="myModalLabel">登录提示：</h4>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <span class="input-group-addon" >帐号：</span>
+                    <input type="text" class="input-sm" id="student_idKey" aria-describedby="basic-addon3" placeholder="请输入学号">
                 </div>
-                <div class="modal-body">
-                    <div class="input-group">
-                        <span class="input-group-addon" >帐号：</span>
-                        <input type="text" class="input-sm" id="student_idKey" aria-describedby="basic-addon3" placeholder="请输入学号">
-                    </div>
-                    <div class="input-group">
-                        <span class="input-group-addon" >密码：</span>
-                        <input type="password" class="input-sm" id="passwordKey" aria-describedby="basic-addon3" placeholder="请输入密码">
-                    </div>
+                <div class="input-group">
+                    <span class="input-group-addon" >密码：</span>
+                    <input type="password" class="input-sm" id="passwordKey" aria-describedby="basic-addon3" placeholder="请输入密码">
                 </div>
-                <div class="modal-footer">
-                    <span id="studentMessage" class="glyphicon"> </span>
-                    <button type="button" class="btn btn-default" data-dismiss="modal" id="LoginCancelBtn">取消</button>
-                    <button type="button" class="btn btn-primary" id="LoginBtn">登录</button>
-                </div>
+            </div>
+            <div class="modal-footer">
+                <span id="studentMessage" class="glyphicon"> </span>
+                <button type="button" class="btn btn-default" data-dismiss="modal" id="LoginCancelBtn">取消</button>
+                <button type="button" class="btn btn-primary" id="LoginBtn">登录</button>
             </div>
         </div>
     </div>
+</div>
 
     <%--<button type="button" class="btn btn-blue nav-external animated hiding" id="loginBntId" hidden="true">点击登录...</button>--%>
 
     <%--<img src="/myScript/1.jpg" width="300px">--%>
 </body>
 
-    <script src="http://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
+    <%--<script src="http://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>--%>
+    <script src="/js/jquery-3.0.0.min.js" type="text/javascript"></script>
+    <script src="/js/bootstrap.min.js" type="text/javascript"></script>
+
     <%--<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>--%>
     <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <%--<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>--%>
 
     <%--使用CDN 获取公共js http://www.bootcdn.cn/--%>
     <%--jQuery Cookie操作插件--%>
-    <script src="http://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+    <%--<script src="http://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>--%>
+    <script src="/js/jquery_cookie.min.js" type="text/javascript"></script>
     <%--jQuery countDown倒计时插件--%>
     <script src="http://cdn.bootcss.com/jquery.countdown/2.1.0/jquery.countdown.min.js"></script>
 
-    <script src="/myScript/bookappointment.js" type="text/javascript"/>
+    <script src="/myScript/bookappointment.js" type="text/javascript"></script>
+   <%--
     <script type="text/javascript">
         var bookAppointment = {
             //封装Ajax的url
@@ -269,7 +219,7 @@
             }
         }
     </script>
-
+--%>
 
     <script type="text/javascript">
 
@@ -278,7 +228,19 @@
             document.getElementById("varifyBtn").onclick = function() {
                 //执行预约的操作
                 bookAppointment.detail.init({book_id:${book.book_id}})
-            }
+            };
+
+            document.getElementById("searchAppointedBook").onclick = function() {
+                //查看我的书籍，如果没有登录需要提示登录
+                if ($.cookie("student_id") == null){
+                    //解决一下如果cookie中没有学号信息，阻止打开新窗口
+
+                    alert("请先登录");
+                    // window.location.reload(true);
+                } else {
+                    location.href="/books/appointed?student_id=${cookie["student_id"].value}";
+                }
+            };
         });
     </script>
 </html>

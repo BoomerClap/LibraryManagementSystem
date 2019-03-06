@@ -9,4 +9,6 @@ import org.springframework.stereotype.Repository;
 public interface StudentDao {
 
     Student queryStudentById(@Param("student_id") long student_id, @Param("password") long password);
+
+    int addStu(Student student);
 }

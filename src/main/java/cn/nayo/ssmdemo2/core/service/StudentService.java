@@ -11,4 +11,10 @@ public interface StudentService {
      */
     Student validateStu(Long student_id, Long password);
 
+    /**
+     * 使用学号注册
+     * @param student
+     * @return
+     */
+    int regiresterStu(Student student);
 }

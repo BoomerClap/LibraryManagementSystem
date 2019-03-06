@@ -48,7 +48,6 @@ var bookAppointment = {
 					if (data.result == "SUCCESS"){
 						// window.location.reload();
 						//弹窗登录成功
-						alert("登录成功");
 						result = true;
 						console.log("登录成功");
 
@@ -132,6 +131,8 @@ var bookAppointment = {
 						}else if (temp == "misMatch"){
 							$("#studentMessage").hide().html("<label class='label label-danger'>学号或密码错误！</label>").show(300);
 						}else {
+							//刷新页面
+							window.location.reload();
 							//绑定一次点击取消按钮事件，让登录框消失
 							$("#LoginCancelBtn").click();
 							//匹配正确时，将学号密码保存在cookie中，过期时间使用默认值

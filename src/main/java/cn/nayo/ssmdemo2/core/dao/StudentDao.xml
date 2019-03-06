@@ -6,7 +6,8 @@
 	<select id="queryStudentById" resultType="cn.nayo.ssmdemo2.core.entity.Student">
 		select
 			student_id,
-			password
+			password,
+			name
 		from
 			student
 		where
@@ -14,5 +15,13 @@
 		and
 			password = #{password}
 	</select>
+
+	<insert id="addStu" parameterType="cn.nayo.ssmdemo2.core.entity.Student">
+		insert
+		into
+			student(student_id, password, name)
+		values
+			(#{student_id}, #{password}, #{name})
+	</insert>
 
 </mapper>
